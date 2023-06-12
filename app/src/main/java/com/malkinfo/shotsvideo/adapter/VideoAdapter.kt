@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.VideoView
 import androidx.recyclerview.widget.RecyclerView
+import com.amplitude.api.Amplitude
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.malkinfo.shotsvideo.R
@@ -39,16 +40,20 @@ class VideoAdapter(options: FirebaseRecyclerOptions<VideoModel?>) :
             videoView.setOnPreparedListener { mediaPlayer ->
                 pbar.visibility = View.GONE
                 mediaPlayer.start()
+
+                Amplitude.getInstance().logEvent("Video Started Event");
             }
             videoView.setOnCompletionListener { mediaPlayer -> mediaPlayer.start() }
             fav.setOnClickListener {
                 if (!isFav){
                     fav.setImageResource(R.drawable.ic_fill_favorite)
                     isFav = true
+                    Amplitude.getInstance().logEvent("Video Disliked Event");
                 }
                 else{
                     fav.setImageResource(R.drawable.ic_favorite)
                     isFav = false
+                    Amplitude.getInstance().logEvent("Video Liked Event");
                 }
 
             }
